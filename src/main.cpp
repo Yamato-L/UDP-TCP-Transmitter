@@ -39,7 +39,8 @@ void Thread_UDP_Client(simapi &api)
 
 	while (true)
 	{
-		udp_client.cli_send(j);
+		udp_client.cli_send("77777777777777777");
+		udp_client.cli_send_json(j);
 		std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 	}
 
@@ -52,12 +53,15 @@ int main(int argc, char* argv[])
 		simapi api("0");
 
 		//Thread_TCP_Server(api);
-		Thread_UDP_Client(api);
+		//Thread_UDP_Client(api);
 
-		// // TCP
-		// std::thread threadClient = std::thread(std::bind(&Thread_TCP_Server, std::ref(api)));
+		//// TCP
+		std::thread threadServer = std::thread(std::bind(&Thread_TCP_Server, std::ref(api)));
 		//// UDP
-		// std::thread threadServer = std::thread(std::bind(&Thread_UDP_Client, std::ref(api)));
+		std::thread threadClient = std::thread(std::bind(&Thread_UDP_Client, std::ref(api)));
+		threadServer.join();
+		threadClient.join();
+
 	}
 	return 0;
 }

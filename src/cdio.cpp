@@ -189,7 +189,19 @@ void asio_io::udp_send(std::size_t length)
 }
 
 // 通用发送（根据协议类型选择）
-void asio_io::cli_send(nlohmann::json &j)
+void asio_io::cli_send(const std::string& data)
+{
+	if (protocol_ == Protocol::TCP) {
+		if (tcp_socket_.is_open()) {
+			asio::write(tcp_socket_, asio::buffer(data));  // 不需要size！
+		}
+	}
+	else {
+		udp_socket_.send_to(asio::buffer(data), udp_target_endpoint_);  // 不需要size！
+	}
+}
+
+void asio_io::cli_send_json(nlohmann::json &j)
 {
 	std::string data = j.dump();
 

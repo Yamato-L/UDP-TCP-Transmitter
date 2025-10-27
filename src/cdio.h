@@ -43,7 +43,8 @@ public:
 	//void udp_send_to(const std::string& data, const std::string& ip = "", long port = 0);
 
 	// ¿Í»§¶Ë·¢ËÍ£¨¼æÈÝTCP/UDP£©
-	void cli_send(nlohmann::json &j);
+	void cli_send(const std::string& data);
+	void cli_send_json(nlohmann::json &j);
 
 	void do_close();
 	bool is_connected() const { return tcp_socket_.is_open(); }
